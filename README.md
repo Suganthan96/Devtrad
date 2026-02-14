@@ -318,13 +318,10 @@ response = requests.post(
 print(response.json())
 ```
 
-### 6. Run Tests
+### 6. Test the Integration
 
 ```bash
-# Run test suite
-python test_api.py
-
-# Demo Injective blockchain integration
+# Run comprehensive Injective integration demo
 python demo_injective.py
 ```
 
