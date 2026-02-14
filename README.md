@@ -19,11 +19,38 @@ Injective provides rich on-chain trading data, but there is no simple API layer 
 
 NinjaQuant provides a modular strategy backtesting API that:
 
-- Fetches historical Injective market data (OHLCV)
+- Fetches historical Injective market data (OHLCV) via REST API
 - Executes predefined trading strategies
 - Simulates trade entries and exits
 - Computes performance metrics
 - Returns structured analytical results
+
+## 🏗️ Architecture
+
+NinjaQuant features a **production-ready modular architecture**:
+
+```
+app/
+├── strategies/        # Trading strategy implementations
+│   ├── base.py       # Abstract Strategy base class
+│   └── ema_crossover.py
+├── data/             # Data fetching layer
+│   ├── injective_client.py  # Real Injective API integration
+│   └── synthetic_client.py  # Testing/demo data
+├── core/             # Business logic
+│   ├── metrics.py    # Performance calculation
+│   └── exceptions.py # Custom error types
+├── api/              # FastAPI routes
+│   └── routes.py     # Endpoint handlers
+└── models/           # Pydantic schemas
+    └── schemas.py    # Request/response models
+```
+
+**Key Benefits:**
+- ✅ **Extensible**: Add new strategies by extending `Strategy` base class
+- ✅ **Testable**: Pluggable data sources (mock for unit tests)
+- ✅ **Production-ready**: Comprehensive error handling, validation, logging
+- ✅ **Configurable**: Environment-based configuration for different deployments
 
 ## 🧠 Core Features
 
@@ -136,15 +163,41 @@ Exposes results via REST endpoints
 pip install -r requirements.txt
 ```
 
-### 2. Run the API
+### 2. Configure Data Source
+
+**Option A: Use Real Injective Data (Default)**
 
 ```bash
-uvicorn main:app --reload
+# Windows PowerShell
+$env:USE_REAL_DATA="true"
+$env:INJECTIVE_NETWORK="mainnet"
+
+# Linux/Mac
+export USE_REAL_DATA=true
+export INJECTIVE_NETWORK=mainnet
+```
+
+**Option B: Use Synthetic Data (Demo/Testing)**
+
+```bash
+# Windows PowerShell
+$env:USE_REAL_DATA="false"
+
+# Linux/Mac
+export USE_REAL_DATA=false
+```
+
+### 3. Run the API
+
+```bash
+python -m uvicorn app.main:app --reload
 ```
 
 The API will start at `http://localhost:8000`
 
-### 3. View API Documentation
+**Note:** The new modular architecture is in the `app/` directory.
+
+### 4. View API Documentation
 
 Open your browser and navigate to:
 
@@ -154,7 +207,13 @@ http://localhost:8000/docs
 
 You'll see the auto-generated Swagger UI with interactive API documentation.
 
-### 4. Test the API
+### 5. Test the API
+
+**Using the demo script:**
+
+```bash
+python demo.py
+```
 
 **Using curl:**
 
@@ -191,6 +250,13 @@ response = requests.post(
 )
 
 print(response.json())
+```
+
+### 6. Run Tests
+
+```bash
+python test_api.py
+```
 ```
 
 ## 🔧 Extensibility
