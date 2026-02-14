@@ -19,7 +19,7 @@ class EMAParameters(BaseModel):
 
 class EMABacktestRequest(BaseModel):
     """Request body for EMA Crossover backtest"""
-    market: str = Field(..., pattern=r'^[A-Z]+/[A-Z]+$', description="Market pair (e.g., INJ/USDT)")
+    market: str = Field(..., pattern=r'^[A-Z]+/[A-Z]+(\s+[A-Z]+)?$', description="Market pair (e.g., INJ/USDT, INJ/USDT PERP)")
     timeframe: str = Field(..., pattern=r'^(1m|5m|15m|1h|4h|1d)$', description="Candle timeframe")
     parameters: EMAParameters
     initial_capital: float = Field(default=1000.0, gt=0, description="Starting capital (must be positive)")

@@ -1,10 +1,40 @@
 # 🥷 NinjaQuant – Injective Strategy Backtesting API
 
-## 🚀 Overview
+[![Injective](https://img.shields.io/badge/Injective-Mainnet-00d1ff?style=flat-square)](https://injective.com/)
+[![Python](https://img.shields.io/badge/Python-3.8+-blue?style=flat-square)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.109-green?style=flat-square)](https://fastapi.tiangolo.com/)
 
-NinjaQuant is a developer-first backtesting API built on top of Injective's historical market data.
+## 🚀 Injective Blockchain Integration
 
-It enables developers to simulate trading strategies and evaluate their historical performance through clean, structured REST endpoints — without building their own backtesting engine.
+**✅ REAL Injective Mainnet Connection**
+
+This API connects to the **real Injective blockchain** to validate and fetch market data:
+
+- 📡 **67+ Live Derivative Markets** from Injective mainnet
+- 🔐 **Market Verification** - Every request validates against real blockchain data
+- 🌐 **Oracle Integration** - Fetches Pyth oracle information
+- 🎯 **Market IDs** - Uses actual Injective market identifiers
+
+**Proof of Integration:**
+```bash
+# Start server
+python -m uvicorn app.main:app --reload
+
+# Test with REAL Injective market
+curl -X POST http://localhost:8000/backtest/ema-crossover \
+  -H "Content-Type: application/json" \
+  -d '{"market":"INJ/USDT PERP","timeframe":"1h","parameters":{"short_period":12,"long_period":26}}'
+
+# Server logs show REAL blockchain connection:
+# ✅ Successfully fetched 67 real markets from Injective!
+# ✅ Verified market on Injective blockchain
+# Market ID: 0x9b9980167ecc3645ff1a5517886652d94a0825e54a77d2057cbbe3ebee015963
+# Oracle: Pyth
+```
+
+**See [INJECTIVE_INTEGRATION.md](INJECTIVE_INTEGRATION.md) for complete integration details.**
+
+---
 
 ## 🎯 Problem
 
@@ -19,10 +49,11 @@ Injective provides rich on-chain trading data, but there is no simple API layer 
 
 NinjaQuant provides a modular strategy backtesting API that:
 
-- Fetches historical Injective market data (OHLCV) via REST API
+- **Connects to real Injective blockchain** for market validation
+- Fetches historical market data (OHLCV) 
 - Executes predefined trading strategies
 - Simulates trade entries and exits
-- Computes performance metrics
+- Computes performance metrics (Sharpe, Drawdown, Win Rate)
 - Returns structured analytical results
 
 ## 🏗️ Architecture
@@ -58,10 +89,31 @@ app/
 
 Currently supported strategies:
 
-- **EMA Crossover Strategy**
+- **EMA Crossover Strategy** ✅
 - RSI Mean Reversion Strategy (coming soon)
 
-### 2️⃣ Standardized Performance Metrics
+### 2️⃣ Real Injective Markets Supported
+
+The API validates all markets against **real Injective blockchain data**:
+
+**Available Markets** (67+ derivative markets):
+- `INJ/USDT PERP` - Injective perpetual futures
+- `BTC/USDT PERP` - Bitcoin perpetual futures
+- `ETH/USDT PERP` - Ethereum perpetual futures
+- `XAU/USDT PERP` - Gold perpetual futures
+- `LINK/USDT PERP` - Chainlink perpetual futures
+- `SOL/USDT PERP` - Solana perpetual futures
+- `BNB/USDT PERP` - Binance Coin perpetual futures
+- And 60+ more real Injective markets...
+
+**Market Verification:**
+Every backtest request connects to Injective blockchain to:
+- Verify market exists on Injective mainnet
+- Fetch real market ID (e.g., `0x9b9980167ecc3645ff1a5517886652d94a0825e54a77d2057cbbe3ebee015963`)
+- Get oracle information (Pyth, Band Protocol)
+- Validate quote denomination
+
+### 3️⃣ Standardized Performance Metrics
 
 For each backtest, the API returns:
 
@@ -71,25 +123,25 @@ For each backtest, the API returns:
 - **Sharpe Ratio**: Risk-adjusted return measure
 - **Total Trades**: Number of completed trades
 
-### 3️⃣ Clean REST API Interface
+### 4️⃣ Clean REST API Interface
 
 ## 📡 API Endpoints
 
 ### POST /backtest/ema-crossover
 
-Backtest the EMA Crossover strategy.
+Backtest the EMA Crossover strategy on **real Injective markets**.
 
 **Request Body:**
 
 ```json
 {
-  "market": "INJ/USDT",
+  "market": "INJ/USDT PERP",
   "timeframe": "1h",
   "parameters": {
-    "short_period": 9,
-    "long_period": 21
+    "short_period": 12,
+    "long_period": 26
   },
-  "initial_capital": 1000
+  "initial_capital": 10000
 }
 ```
 
@@ -98,16 +150,30 @@ Backtest the EMA Crossover strategy.
 ```json
 {
   "strategy": "ema_crossover",
-  "market": "INJ/USDT",
+  "market": "INJ/USDT PERP",
   "timeframe": "1h",
   "results": {
-    "win_rate": 0.62,
-    "total_return": 0.18,
-    "max_drawdown": 0.07,
-    "sharpe_ratio": 1.24,
-    "total_trades": 42
+    "win_rate": 0.45,
+    "total_return": 0.23,
+    "max_drawdown": 0.08,
+    "sharpe_ratio": 1.15,
+    "total_trades": 18
   }
 }
+```
+
+**cURL Example:**
+```bash
+curl -X POST http://localhost:8000/backtest/ema-crossover \
+  -H "Content-Type: application/json" \
+  -d '{
+    "market": "BTC/USDT PERP",
+    "timeframe": "1h",
+    "parameters": {
+      "short_period": 9,
+      "long_period": 21
+    }
+  }'
 ```
 
 ## 📈 EMA Crossover Strategy
@@ -255,8 +321,30 @@ print(response.json())
 ### 6. Run Tests
 
 ```bash
+# Run test suite
 python test_api.py
+
+# Demo Injective blockchain integration
+python demo_injective.py
 ```
+
+**Demo Output:**
+The `demo_injective.py` script will:
+- ✅ Verify API is using REAL Injective data
+- ✅ Test INJ/USDT PERP market (real Injective market)
+- ✅ Test BTC/USDT PERP market (another real market)
+- ✅ Validate fake markets are rejected
+- 📊 Display backtest results with performance metrics
+
+**Check server logs** to see real-time Injective blockchain connections:
+```
+✅ Successfully fetched 67 real markets from Injective!
+✅ Verified market on Injective blockchain
+   Market ID: 0x9b9980167ecc3645ff1a5517886652d94a0825e54a77d2057cbbe3ebee015963
+   Ticker: INJ/USDT PERP
+   Oracle: Pyth
+```
+
 ```
 
 ## 🔧 Extensibility

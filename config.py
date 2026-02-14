@@ -15,7 +15,7 @@ class Settings:
     INJECTIVE_NETWORK: Literal["mainnet", "testnet"] = os.getenv("INJECTIVE_NETWORK", "mainnet")
     
     # Data Client Configuration
-    USE_REAL_DATA: bool = os.getenv("USE_REAL_DATA", "false").lower() == "true"
+    USE_REAL_DATA: bool = os.getenv("USE_REAL_DATA", "true").lower() == "true"
     DATA_FETCH_TIMEOUT: int = int(os.getenv("DATA_FETCH_TIMEOUT", "10"))
     DEFAULT_CANDLE_LIMIT: int = 500
     

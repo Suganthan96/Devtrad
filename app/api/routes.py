@@ -73,14 +73,14 @@ def backtest_ema_crossover(request: EMABacktestRequest):
     try:
         logger.info(f"Backtest request: {request.market} {request.timeframe} with params {request.parameters}")
         
-        # Step 1: Fetch historical data
+        # Step 1: Fetch historical data (NO FALLBACK - Real data only)
         data_client = get_data_client()
+        
         df = data_client.fetch_historical_candles(
             market=request.market,
             timeframe=request.timeframe,
             limit=settings.DEFAULT_CANDLE_LIMIT
         )
-        
         logger.info(f"Fetched {len(df)} candles for {request.market}")
         
         # Step 2: Execute strategy
