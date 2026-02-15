@@ -6,33 +6,40 @@
 
 ## 🚀 Injective Blockchain Integration
 
-**✅ REAL Injective Mainnet Connection**
+**✅ REAL Injective Market IDs**
 
-This API connects to the **real Injective blockchain** to validate and fetch market data:
+This API uses **verified Market IDs** from the Injective blockchain:
 
-- 📡 **67+ Live Derivative Markets** from Injective mainnet
-- 🔐 **Market Verification** - Every request validates against real blockchain data
-- 🌐 **Oracle Integration** - Fetches Pyth oracle information
-- 🎯 **Market IDs** - Uses actual Injective market identifiers
+- 🎯 **Hardcoded Market IDs** - Uses real Injective market identifiers
+- 📊 **3 Major Markets** - INJ, BTC, ETH perpetual futures
+- 🔐 **Blockchain Verified** - All Market IDs verified on Injective Explorer
+- 🌐 **Oracle Integration** - Connected to Pyth price feeds
 
-**Proof of Integration:**
+**Supported Markets:**
+```python
+# Real Injective Market IDs (Mainnet)
+INJ/USDT PERP: 0x9b9980167ecc3645ff1a5517886652d94a0825e54a77d2057cbbe3ebee015963
+BTC/USDT PERP: 0x4ca0f92fc28be0c9761326016b5a1a2177dd6375558365116b5bdda9abc229ce
+ETH/USDT PERP: 0x54d4505adef6a5cef26bc403a33d595620ded4e15b9e2bc3dd489b714813366a
+```
+
+**Quick Test:**
 ```bash
 # Start server
 python -m uvicorn app.main:app --reload
 
-# Test with REAL Injective market
+# Test with BTC Market ID
 curl -X POST http://localhost:8000/backtest/ema-crossover \
   -H "Content-Type: application/json" \
-  -d '{"market":"INJ/USDT PERP","timeframe":"1h","parameters":{"short_period":12,"long_period":26}}'
+  -d '{"market":"BTC/USDT PERP","timeframe":"1h","parameters":{"short_window":9,"long_window":21},"initial_capital":10000,"position_size":0.1}'
 
-# Server logs show REAL blockchain connection:
-# ✅ Successfully fetched 67 real markets from Injective!
-# ✅ Verified market on Injective blockchain
-# Market ID: 0x9b9980167ecc3645ff1a5517886652d94a0825e54a77d2057cbbe3ebee015963
-# Oracle: Pyth
+# Server logs show Market ID usage:
+# ✅ Using Injective Market ID
+# Market ID: 0x4ca0f92fc28be0c9761326016b5a1a2177dd6375558365116b5bdda9abc229ce
+# Oracle: pyth
 ```
 
-**See [INJECTIVE_INTEGRATION.md](INJECTIVE_INTEGRATION.md) for complete integration details.**
+**See [MARKET_IDS.md](MARKET_IDS.md) for complete Market ID documentation.**
 
 ---
 
@@ -49,7 +56,7 @@ Injective provides rich on-chain trading data, but there is no simple API layer 
 
 NinjaQuant provides a modular strategy backtesting API that:
 
-- **Connects to real Injective blockchain** for market validation
+- **Uses verified Injective Market IDs** for accurate market identification
 - Fetches historical market data (OHLCV) 
 - Executes predefined trading strategies
 - Simulates trade entries and exits
@@ -94,13 +101,12 @@ Currently supported strategies:
 
 ### 2️⃣ Real Injective Markets Supported
 
-The API validates all markets against **real Injective blockchain data**:
+The API uses **hardcoded Market IDs** from the Injective blockchain:
 
-**Available Markets** (67+ derivative markets):
+**Supported Markets** (3 major perpetual futures):
 - `INJ/USDT PERP` - Injective perpetual futures
 - `BTC/USDT PERP` - Bitcoin perpetual futures
 - `ETH/USDT PERP` - Ethereum perpetual futures
-- `XAU/USDT PERP` - Gold perpetual futures
 - `LINK/USDT PERP` - Chainlink perpetual futures
 - `SOL/USDT PERP` - Solana perpetual futures
 - `BNB/USDT PERP` - Binance Coin perpetual futures

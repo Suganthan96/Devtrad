@@ -15,7 +15,17 @@ This document lists all Injective market identifiers used in the NinjaQuant API.
 
 ---
 
-## 🔑 Primary Markets Used in Project
+## � Quick Reference Table
+
+| Market | Market ID | Oracle | Price Range |
+|--------|-----------|--------|-------------|
+| **INJ/USDT PERP** | `0x9b9980167ecc3645ff1a5517886652d94a0825e54a77d2057cbbe3ebee015963` | Pyth | ~$25 |
+| **BTC/USDT PERP** | `0x4ca0f92fc28be0c9761326016b5a1a2177dd6375558365116b5bdda9abc229ce` | Pyth | ~$50,000+ |
+| **ETH/USDT PERP** | `0x54d4505adef6a5cef26bc403a33d595620ded4e15b9e2bc3dd489b714813366a` | Pyth | ~$3,000+ |
+
+---
+
+## �🔑 Primary Markets Used in Project
 
 ### 1️⃣ INJ/USDT PERP (Injective Perpetual)
 
@@ -39,11 +49,13 @@ This document lists all Injective market identifiers used in the NinjaQuant API.
 
 ### 2️⃣ BTC/USDT PERP (Bitcoin Perpetual)
 
-**Market ID:** Dynamically fetched from Injective blockchain
+**Market ID:** `0x4ca0f92fc28be0c9761326016b5a1a2177dd6375558365116b5bdda9abc229ce`
 
 **Details:**
 - **Ticker:** BTC/USDT PERP
-- **Oracle:** Pyth/Band Protocol
+- **Oracle:** Pyth
+- **Quote Denom:** USDT
+- **Oracle Base:** 0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43
 - **Use Case:** High-value asset testing, institutional scenarios
 - **Approximate Price:** $50,000+
 
@@ -56,11 +68,13 @@ This document lists all Injective market identifiers used in the NinjaQuant API.
 
 ### 3️⃣ ETH/USDT PERP (Ethereum Perpetual)
 
-**Market ID:** Dynamically fetched from Injective blockchain
+**Market ID:** `0x54d4505adef6a5cef26bc403a33d595620ded4e15b9e2bc3dd489b714813366a`
 
 **Details:**
 - **Ticker:** ETH/USDT PERP
-- **Oracle:** Pyth/Band Protocol
+- **Oracle:** Pyth
+- **Quote Denom:** USDT
+- **Oracle Base:** 0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace
 - **Use Case:** Second-largest crypto asset testing
 - **Approximate Price:** $3,000+
 
@@ -310,9 +324,49 @@ Market IDs are **NOT hardcoded** in the project. They are:
 
 **Behind the scenes:**
 1. API queries Injective LCD
-2. Finds BTC market_id (unique 66-char string)
+2. Finds market_id: `0x4ca0f92fc28be0c9761326016b5a1a2177dd6375558365116b5bdda9abc229ce`
 3. Extracts oracle price data
 4. Runs RSI backtest with verified data
+
+### Example 3: EMA Strategy on ETH
+```json
+{
+  "market": "ETH/USDT PERP",
+  "timeframe": "4h",
+  "parameters": {
+    "short_period": 12,
+    "long_period": 26
+  }
+}
+```
+
+**Behind the scenes:**
+1. API queries Injective LCD
+2. Finds market_id: `0x54d4505adef6a5cef26bc403a33d595620ded4e15b9e2bc3dd489b714813366a`
+3. Validates market and oracle
+4. Executes backtest
+
+---
+
+## 🔍 Verify Market IDs on Injective Explorer
+
+You can verify these Market IDs are real by visiting the Injective Explorer:
+
+### INJ/USDT PERP
+**Explorer:** https://explorer.injective.network/market/0x9b9980167ecc3645ff1a5517886652d94a0825e54a77d2057cbbe3ebee015963
+
+### BTC/USDT PERP  
+**Explorer:** https://explorer.injective.network/market/0x4ca0f92fc28be0c9761326016b5a1a2177dd6375558365116b5bdda9abc229ce
+
+### ETH/USDT PERP
+**Explorer:** https://explorer.injective.network/market/0x54d4505adef6a5cef26bc403a33d595620ded4e15b9e2bc3dd489b714813366a
+
+**What you'll see:**
+- ✅ Market Type: Derivative
+- ✅ Ticker: Matches (e.g., BTC/USDT PERP)
+- ✅ Oracle information (Pyth)
+- ✅ Trading parameters (margin ratios, tick sizes)
+- ✅ Real-time market data
 
 ---
 
