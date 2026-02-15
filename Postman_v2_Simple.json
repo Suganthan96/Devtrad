@@ -1,0 +1,82 @@
+{
+  "info": {
+    "name": "NinjaQuant API v2.0 - Complete with Advanced APIs",
+    "description": "Full testing suite including Backtesting + Strategy Comparison + Market Regime + Risk Analysis",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "version": "2.0.0"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{base_url}}/",
+        "description": "Check API health and list all endpoints"
+      }
+    },
+    {
+      "name": "2. EMA Backtest - BTC",
+      "request": {
+        "method": "POST",
+        "header": [{"key": "Content-Type", "value": "application/json"}],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"market\": \"BTC/USDT PERP\",\n  \"timeframe\": \"1h\",\n  \"parameters\": {\n    \"short_period\": 9,\n    \"long_period\": 21\n  },\n  \"initial_capital\": 10000\n}"
+        },
+        "url": "{{base_url}}/backtest/ema-crossover"
+      }
+    },
+    {
+      "name": "3. RSI Backtest - ETH",
+      "request": {
+        "method": "POST",
+        "header": [{"key": "Content-Type", "value": "application/json"}],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"market\": \"ETH/USDT PERP\",\n  \"timeframe\": \"1h\",\n  \"parameters\": {\n    \"period\": 14,\n    \"oversold\": 30,\n    \"overbought\": 70\n  },\n  \"initial_capital\": 10000\n}"
+        },
+        "url": "{{base_url}}/backtest/rsi-mean-reversion"
+      }
+    },
+    {
+      "name": "4. Strategy Comparison",
+      "request": {
+        "method": "POST",
+        "header": [{"key": "Content-Type", "value": "application/json"}],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"market\": \"BTC/USDT PERP\",\n  \"timeframe\": \"1h\",\n  \"strategies\": [\n    {\"strategy\": \"ema_crossover\", \"parameters\": {\"short_period\": 9, \"long_period\": 21}},\n    {\"strategy\": \"ema_crossover\", \"parameters\": {\"short_period\": 12, \"long_period\": 26}},\n    {\"strategy\": \"rsi_mean_reversion\", \"parameters\": {\"period\": 14, \"oversold\": 30, \"overbought\": 70}}\n  ],\n  \"initial_capital\": 10000\n}"
+        },
+        "url": "{{base_url}}/compare"
+      }
+    },
+    {
+      "name": "5. Market Regime - BTC",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{base_url}}/market-regime?market=BTC/USDT PERP&timeframe=1h"
+      }
+    },
+    {
+      "name": "6. Risk Analysis - RSI",
+      "request": {
+        "method": "POST",
+        "header": [{"key": "Content-Type", "value": "application/json"}],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"market\": \"ETH/USDT PERP\",\n  \"timeframe\": \"1h\",\n  \"strategy\": \"rsi_mean_reversion\",\n  \"parameters\": {\n    \"period\": 14,\n    \"oversold\": 30,\n    \"overbought\": 70\n  },\n  \"initial_capital\": 10000\n}"
+        },
+        "url": "{{base_url}}/risk-analysis"
+      }
+    }
+  ]
+}
