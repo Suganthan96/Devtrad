@@ -1,0 +1,11 @@
+{
+  "market": "ETH/USDT PERP",
+  "timeframe": "1h",
+  "strategy": "rsi_mean_reversion",
+  "parameters": {
+    "period": 14,
+    "oversold": 30,
+    "overbought": 70
+  },
+  "initial_capital": 10000
+}

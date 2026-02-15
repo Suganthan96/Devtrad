@@ -107,17 +107,12 @@ The API uses **hardcoded Market IDs** from the Injective blockchain:
 - `INJ/USDT PERP` - Injective perpetual futures
 - `BTC/USDT PERP` - Bitcoin perpetual futures
 - `ETH/USDT PERP` - Ethereum perpetual futures
-- `LINK/USDT PERP` - Chainlink perpetual futures
-- `SOL/USDT PERP` - Solana perpetual futures
-- `BNB/USDT PERP` - Binance Coin perpetual futures
-- And 60+ more real Injective markets...
 
 **Market Verification:**
-Every backtest request connects to Injective blockchain to:
-- Verify market exists on Injective mainnet
-- Fetch real market ID (e.g., `0x9b9980167ecc3645ff1a5517886652d94a0825e54a77d2057cbbe3ebee015963`)
-- Get oracle information (Pyth, Band Protocol)
-- Validate quote denomination
+All Market IDs are verified on Injective blockchain:
+- Real Market IDs from Injective mainnet
+- Connected to Pyth price oracles
+- Verified on [Injective Explorer](https://explorer.injective.network/)
 
 ### 3️⃣ Standardized Performance Metrics
 
@@ -128,6 +123,30 @@ For each backtest, the API returns:
 - **Maximum Drawdown**: Largest peak-to-trough decline
 - **Sharpe Ratio**: Risk-adjusted return measure
 - **Total Trades**: Number of completed trades
+
+### 4️⃣ **🚀 ADVANCED APIs** (Professional-Grade)
+
+**Three advanced endpoints that separate this from basic backtesting:**
+
+#### 🔬 Strategy Comparison - `POST /compare`
+Compare multiple strategy configurations in ONE request
+- Test EMA(9,21) vs EMA(12,26) vs RSI(14,30,70) simultaneously
+- Automatically identifies best performing strategy
+- Perfect for parameter optimization
+
+#### 🌡️ Market Regime Analysis - `GET /market-regime`
+Analyze market conditions to select appropriate strategies
+- Classifies regime: Trending / Ranging / Volatile
+- Calculates trend strength and volatility
+- Recommends which strategy to use
+
+#### 📊 Risk Analysis - `POST /risk-analysis`
+Professional risk metrics (not just profit focus)
+- Return volatility and Value at Risk (VaR)
+- Max consecutive losses
+- Risk level classification (Low/Medium/High)
+
+**See [ADVANCED_APIS.md](ADVANCED_APIS.md) for complete documentation.**
 
 ### 4️⃣ Clean REST API Interface
 

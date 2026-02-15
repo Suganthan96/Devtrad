@@ -1,0 +1,29 @@
+{
+  "market": "BTC/USDT PERP",
+  "timeframe": "1h",
+  "strategies": [
+    {
+      "strategy": "ema_crossover",
+      "parameters": {
+        "short_period": 9,
+        "long_period": 21
+      }
+    },
+    {
+      "strategy": "ema_crossover",
+      "parameters": {
+        "short_period": 12,
+        "long_period": 26
+      }
+    },
+    {
+      "strategy": "rsi_mean_reversion",
+      "parameters": {
+        "period": 14,
+        "oversold": 30,
+        "overbought": 70
+      }
+    }
+  ],
+  "initial_capital": 10000
+}
