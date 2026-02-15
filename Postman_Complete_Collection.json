@@ -1,0 +1,817 @@
+{
+  "info": {
+    "name": "NinjaQuant API - Complete Test Suite",
+    "description": "Complete test collection for NinjaQuant Injective Strategy Backtesting API with EMA and RSI strategies",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "BASE_URL",
+      "value": "http://localhost:8000",
+      "type": "default"
+    },
+    {
+      "key": "RAILWAY_URL",
+      "value": "https://your-app.up.railway.app",
+      "type": "default"
+    },
+    {
+      "key": "RENDER_URL",
+      "value": "https://your-app.onrender.com",
+      "type": "default"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health & Info",
+      "item": [
+        {
+          "name": "Root - API Info",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/",
+              "host": ["{{BASE_URL}}"],
+              "path": [""]
+            },
+            "description": "Get API information and available endpoints"
+          },
+          "response": []
+        },
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/health",
+              "host": ["{{BASE_URL}}"],
+              "path": ["health"]
+            },
+            "description": "Check API health status"
+          },
+          "response": []
+        },
+        {
+          "name": "API Documentation",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{BASE_URL}}/docs",
+              "host": ["{{BASE_URL}}"],
+              "path": ["docs"]
+            },
+            "description": "Open interactive API documentation"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "EMA Strategy Tests",
+      "item": [
+        {
+          "name": "EMA - INJ/USDT PERP (Standard)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"market\": \"INJ/USDT PERP\",\n  \"timeframe\": \"1h\",\n  \"parameters\": {\n    \"short_period\": 9,\n    \"long_period\": 21\n  },\n  \"initial_capital\": 1000\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/backtest/ema-crossover",
+              "host": ["{{BASE_URL}}"],
+              "path": ["backtest", "ema-crossover"]
+            },
+            "description": "Test EMA strategy on INJ/USDT PERP with standard 9/21 periods"
+          },
+          "response": []
+        },
+        {
+          "name": "EMA - BTC/USDT PERP (Standard)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"market\": \"BTC/USDT PERP\",\n  \"timeframe\": \"1h\",\n  \"parameters\": {\n    \"short_period\": 9,\n    \"long_period\": 21\n  },\n  \"initial_capital\": 10000\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/backtest/ema-crossover",
+              "host": ["{{BASE_URL}}"],
+              "path": ["backtest", "ema-crossover"]
+            },
+            "description": "Test EMA strategy on Bitcoin perpetual"
+          },
+          "response": []
+        },
+        {
+          "name": "EMA - ETH/USDT PERP (Standard)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"market\": \"ETH/USDT PERP\",\n  \"timeframe\": \"1h\",\n  \"parameters\": {\n    \"short_period\": 9,\n    \"long_period\": 21\n  },\n  \"initial_capital\": 5000\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/backtest/ema-crossover",
+              "host": ["{{BASE_URL}}"],
+              "path": ["backtest", "ema-crossover"]
+            },
+            "description": "Test EMA strategy on Ethereum perpetual"
+          },
+          "response": []
+        },
+        {
+          "name": "EMA - Fast (5/13)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"market\": \"INJ/USDT PERP\",\n  \"timeframe\": \"1h\",\n  \"parameters\": {\n    \"short_period\": 5,\n    \"long_period\": 13\n  },\n  \"initial_capital\": 1000\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/backtest/ema-crossover",
+              "host": ["{{BASE_URL}}"],
+              "path": ["backtest", "ema-crossover"]
+            },
+            "description": "Fast EMA crossover - more frequent signals"
+          },
+          "response": []
+        },
+        {
+          "name": "EMA - Medium (12/26)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"market\": \"INJ/USDT PERP\",\n  \"timeframe\": \"1h\",\n  \"parameters\": {\n    \"short_period\": 12,\n    \"long_period\": 26\n  },\n  \"initial_capital\": 1000\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/backtest/ema-crossover",
+              "host": ["{{BASE_URL}}"],
+              "path": ["backtest", "ema-crossover"]
+            },
+            "description": "MACD-style EMA periods (12/26)"
+          },
+          "response": []
+        },
+        {
+          "name": "EMA - Slow (20/50)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"market\": \"INJ/USDT PERP\",\n  \"timeframe\": \"4h\",\n  \"parameters\": {\n    \"short_period\": 20,\n    \"long_period\": 50\n  },\n  \"initial_capital\": 1000\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/backtest/ema-crossover",
+              "host": ["{{BASE_URL}}"],
+              "path": ["backtest", "ema-crossover"]
+            },
+            "description": "Slow EMA crossover - fewer but stronger signals"
+          },
+          "response": []
+        },
+        {
+          "name": "EMA - 15min Timeframe",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"market\": \"INJ/USDT PERP\",\n  \"timeframe\": \"15m\",\n  \"parameters\": {\n    \"short_period\": 9,\n    \"long_period\": 21\n  },\n  \"initial_capital\": 1000\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/backtest/ema-crossover",
+              "host": ["{{BASE_URL}}"],
+              "path": ["backtest", "ema-crossover"]
+            },
+            "description": "Scalping timeframe (15 minutes)"
+          },
+          "response": []
+        },
+        {
+          "name": "EMA - Daily Timeframe",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"market\": \"BTC/USDT PERP\",\n  \"timeframe\": \"1d\",\n  \"parameters\": {\n    \"short_period\": 9,\n    \"long_period\": 21\n  },\n  \"initial_capital\": 10000\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/backtest/ema-crossover",
+              "host": ["{{BASE_URL}}"],
+              "path": ["backtest", "ema-crossover"]
+            },
+            "description": "Swing trading timeframe (daily)"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "RSI Strategy Tests",
+      "item": [
+        {
+          "name": "RSI - INJ/USDT PERP (Standard)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"market\": \"INJ/USDT PERP\",\n  \"timeframe\": \"1h\",\n  \"parameters\": {\n    \"period\": 14,\n    \"oversold\": 30,\n    \"overbought\": 70\n  },\n  \"initial_capital\": 1000\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/backtest/rsi-mean-reversion",
+              "host": ["{{BASE_URL}}"],
+              "path": ["backtest", "rsi-mean-reversion"]
+            },
+            "description": "Test RSI strategy on INJ/USDT PERP with standard 14-period RSI"
+          },
+          "response": []
+        },
+        {
+          "name": "RSI - BTC/USDT PERP (Standard)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"market\": \"BTC/USDT PERP\",\n  \"timeframe\": \"1h\",\n  \"parameters\": {\n    \"period\": 14,\n    \"oversold\": 30,\n    \"overbought\": 70\n  },\n  \"initial_capital\": 10000\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/backtest/rsi-mean-reversion",
+              "host": ["{{BASE_URL}}"],
+              "path": ["backtest", "rsi-mean-reversion"]
+            },
+            "description": "Test RSI strategy on Bitcoin perpetual"
+          },
+          "response": []
+        },
+        {
+          "name": "RSI - ETH/USDT PERP (Standard)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"market\": \"ETH/USDT PERP\",\n  \"timeframe\": \"1h\",\n  \"parameters\": {\n    \"period\": 14,\n    \"oversold\": 30,\n    \"overbought\": 70\n  },\n  \"initial_capital\": 5000\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/backtest/rsi-mean-reversion",
+              "host": ["{{BASE_URL}}"],
+              "path": ["backtest", "rsi-mean-reversion"]
+            },
+            "description": "Test RSI strategy on Ethereum perpetual"
+          },
+          "response": []
+        },
+        {
+          "name": "RSI - Fast (7 period)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"market\": \"INJ/USDT PERP\",\n  \"timeframe\": \"1h\",\n  \"parameters\": {\n    \"period\": 7,\n    \"oversold\": 30,\n    \"overbought\": 70\n  },\n  \"initial_capital\": 1000\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/backtest/rsi-mean-reversion",
+              "host": ["{{BASE_URL}}"],
+              "path": ["backtest", "rsi-mean-reversion"]
+            },
+            "description": "Fast RSI - more sensitive to price changes"
+          },
+          "response": []
+        },
+        {
+          "name": "RSI - Slow (21 period)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"market\": \"INJ/USDT PERP\",\n  \"timeframe\": \"4h\",\n  \"parameters\": {\n    \"period\": 21,\n    \"oversold\": 30,\n    \"overbought\": 70\n  },\n  \"initial_capital\": 1000\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/backtest/rsi-mean-reversion",
+              "host": ["{{BASE_URL}}"],
+              "path": ["backtest", "rsi-mean-reversion"]
+            },
+            "description": "Slow RSI - smoother signals"
+          },
+          "response": []
+        },
+        {
+          "name": "RSI - Tight Bands (40/60)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"market\": \"INJ/USDT PERP\",\n  \"timeframe\": \"1h\",\n  \"parameters\": {\n    \"period\": 14,\n    \"oversold\": 40,\n    \"overbought\": 60\n  },\n  \"initial_capital\": 1000\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/backtest/rsi-mean-reversion",
+              "host": ["{{BASE_URL}}"],
+              "path": ["backtest", "rsi-mean-reversion"]
+            },
+            "description": "Tight bands - more frequent trades"
+          },
+          "response": []
+        },
+        {
+          "name": "RSI - Wide Bands (20/80)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"market\": \"INJ/USDT PERP\",\n  \"timeframe\": \"1h\",\n  \"parameters\": {\n    \"period\": 14,\n    \"oversold\": 20,\n    \"overbought\": 80\n  },\n  \"initial_capital\": 1000\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/backtest/rsi-mean-reversion",
+              "host": ["{{BASE_URL}}"],
+              "path": ["backtest", "rsi-mean-reversion"]
+            },
+            "description": "Wide bands - extreme conditions only"
+          },
+          "response": []
+        },
+        {
+          "name": "RSI - Conservative (25/75)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"market\": \"BTC/USDT PERP\",\n  \"timeframe\": \"1h\",\n  \"parameters\": {\n    \"period\": 14,\n    \"oversold\": 25,\n    \"overbought\": 75\n  },\n  \"initial_capital\": 10000\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/backtest/rsi-mean-reversion",
+              "host": ["{{BASE_URL}}"],
+              "path": ["backtest", "rsi-mean-reversion"]
+            },
+            "description": "Conservative levels for Bitcoin"
+          },
+          "response": []
+        },
+        {
+          "name": "RSI - 15min Scalping",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"market\": \"ETH/USDT PERP\",\n  \"timeframe\": \"15m\",\n  \"parameters\": {\n    \"period\": 7,\n    \"oversold\": 30,\n    \"overbought\": 70\n  },\n  \"initial_capital\": 5000\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/backtest/rsi-mean-reversion",
+              "host": ["{{BASE_URL}}"],
+              "path": ["backtest", "rsi-mean-reversion"]
+            },
+            "description": "Fast RSI for scalping on 15min chart"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Error & Edge Cases",
+      "item": [
+        {
+          "name": "Invalid Market",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 404\", function () {",
+                  "    pm.response.to.have.status(404);",
+                  "});",
+                  "",
+                  "pm.test(\"Error message present\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.detail).to.include('Market');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"market\": \"INVALID/MARKET\",\n  \"timeframe\": \"1h\",\n  \"parameters\": {\n    \"short_period\": 9,\n    \"long_period\": 21\n  },\n  \"initial_capital\": 1000\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/backtest/ema-crossover",
+              "host": ["{{BASE_URL}}"],
+              "path": ["backtest", "ema-crossover"]
+            },
+            "description": "Should return 404 for invalid market"
+          },
+          "response": []
+        },
+        {
+          "name": "Invalid Timeframe",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 422\", function () {",
+                  "    pm.response.to.have.status(422);",
+                  "});",
+                  "",
+                  "pm.test(\"Validation error message\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.detail).to.be.an('array');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"market\": \"INJ/USDT PERP\",\n  \"timeframe\": \"2h\",\n  \"parameters\": {\n    \"short_period\": 9,\n    \"long_period\": 21\n  },\n  \"initial_capital\": 1000\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/backtest/ema-crossover",
+              "host": ["{{BASE_URL}}"],
+              "path": ["backtest", "ema-crossover"]
+            },
+            "description": "Should return 422 for invalid timeframe"
+          },
+          "response": []
+        },
+        {
+          "name": "EMA - Invalid Periods (short >= long)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 422\", function () {",
+                  "    pm.response.to.have.status(422);",
+                  "});",
+                  "",
+                  "pm.test(\"Validation error for periods\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(JSON.stringify(jsonData)).to.include('long_period');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"market\": \"INJ/USDT PERP\",\n  \"timeframe\": \"1h\",\n  \"parameters\": {\n    \"short_period\": 21,\n    \"long_period\": 9\n  },\n  \"initial_capital\": 1000\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/backtest/ema-crossover",
+              "host": ["{{BASE_URL}}"],
+              "path": ["backtest", "ema-crossover"]
+            },
+            "description": "Should fail validation when short >= long"
+          },
+          "response": []
+        },
+        {
+          "name": "RSI - Invalid Thresholds (oversold >= overbought)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 422\", function () {",
+                  "    pm.response.to.have.status(422);",
+                  "});",
+                  "",
+                  "pm.test(\"Validation error for thresholds\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(JSON.stringify(jsonData)).to.include('overbought');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"market\": \"INJ/USDT PERP\",\n  \"timeframe\": \"1h\",\n  \"parameters\": {\n    \"period\": 14,\n    \"oversold\": 70,\n    \"overbought\": 30\n  },\n  \"initial_capital\": 1000\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/backtest/rsi-mean-reversion",
+              "host": ["{{BASE_URL}}"],
+              "path": ["backtest", "rsi-mean-reversion"]
+            },
+            "description": "Should fail when oversold >= overbought"
+          },
+          "response": []
+        },
+        {
+          "name": "Negative Initial Capital",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 422\", function () {",
+                  "    pm.response.to.have.status(422);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"market\": \"INJ/USDT PERP\",\n  \"timeframe\": \"1h\",\n  \"parameters\": {\n    \"short_period\": 9,\n    \"long_period\": 21\n  },\n  \"initial_capital\": -1000\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/backtest/ema-crossover",
+              "host": ["{{BASE_URL}}"],
+              "path": ["backtest", "ema-crossover"]
+            },
+            "description": "Should reject negative initial capital"
+          },
+          "response": []
+        },
+        {
+          "name": "Missing Required Fields",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 422\", function () {",
+                  "    pm.response.to.have.status(422);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"market\": \"INJ/USDT PERP\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/backtest/ema-crossover",
+              "host": ["{{BASE_URL}}"],
+              "path": ["backtest", "ema-crossover"]
+            },
+            "description": "Should fail when required fields are missing"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Performance Tests",
+      "item": [
+        {
+          "name": "EMA - Large Capital Test",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"market\": \"BTC/USDT PERP\",\n  \"timeframe\": \"1h\",\n  \"parameters\": {\n    \"short_period\": 9,\n    \"long_period\": 21\n  },\n  \"initial_capital\": 100000\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/backtest/ema-crossover",
+              "host": ["{{BASE_URL}}"],
+              "path": ["backtest", "ema-crossover"]
+            },
+            "description": "Test with $100k initial capital"
+          },
+          "response": []
+        },
+        {
+          "name": "RSI - Small Capital Test",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"market\": \"INJ/USDT PERP\",\n  \"timeframe\": \"1h\",\n  \"parameters\": {\n    \"period\": 14,\n    \"oversold\": 30,\n    \"overbought\": 70\n  },\n  \"initial_capital\": 100\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/backtest/rsi-mean-reversion",
+              "host": ["{{BASE_URL}}"],
+              "path": ["backtest", "rsi-mean-reversion"]
+            },
+            "description": "Test with minimal capital ($100)"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Strategy Comparison",
+      "item": [
+        {
+          "name": "Compare - INJ/USDT PERP - EMA",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"market\": \"INJ/USDT PERP\",\n  \"timeframe\": \"1h\",\n  \"parameters\": {\n    \"short_period\": 9,\n    \"long_period\": 21\n  },\n  \"initial_capital\": 10000\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/backtest/ema-crossover",
+              "host": ["{{BASE_URL}}"],
+              "path": ["backtest", "ema-crossover"]
+            },
+            "description": "EMA strategy for comparison"
+          },
+          "response": []
+        },
+        {
+          "name": "Compare - INJ/USDT PERP - RSI",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"market\": \"INJ/USDT PERP\",\n  \"timeframe\": \"1h\",\n  \"parameters\": {\n    \"period\": 14,\n    \"oversold\": 30,\n    \"overbought\": 70\n  },\n  \"initial_capital\": 10000\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/backtest/rsi-mean-reversion",
+              "host": ["{{BASE_URL}}"],
+              "path": ["backtest", "rsi-mean-reversion"]
+            },
+            "description": "RSI strategy for comparison"
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
