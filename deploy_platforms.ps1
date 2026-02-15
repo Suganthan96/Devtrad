@@ -167,6 +167,6 @@ switch ($choice) {
 }
 
 Write-Host ""
-Write-Host "📚 For more details, see FREE_HOSTING.md" -ForegroundColor Cyan
+Write-Host "For more details, see FREE_HOSTING.md" -ForegroundColor Cyan
 Write-Host ""
 pause

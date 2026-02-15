@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: ninjaquant-api
+    runtime: python
+    env: python
+    plan: free
+    buildCommand: pip install --upgrade pip && pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: USE_REAL_DATA
+        value: true
+      - key: INJECTIVE_NETWORK
+        value: mainnet
+      - key: CARGO_NET_GIT_FETCH_WITH_CLI
+        value: true
+    healthCheckPath: /health
