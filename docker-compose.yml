@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  ninjaquant-api:
+    build: .
+    container_name: ninjaquant-api
+    ports:
+      - "8000:8000"
+    environment:
+      - USE_REAL_DATA=true
+      - INJECTIVE_NETWORK=mainnet
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
