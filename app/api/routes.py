@@ -1,8 +1,12 @@
 """FastAPI route handlers"""
 from fastapi import APIRouter, HTTPException
 import logging
-from ..models.schemas import EMABacktestRequest, EMABacktestResponse, BacktestResults
-from ..strategies import EMAStrategy
+from ..models.schemas import (
+    EMABacktestRequest, EMABacktestResponse,
+    RSIBacktestRequest, RSIBacktestResponse,
+    BacktestResults
+)
+from ..strategies import EMAStrategy, RSIStrategy
 from ..data import InjectiveDataClient, SyntheticDataClient
 from ..core import MetricsCalculator
 from ..core.exceptions import (
@@ -37,7 +41,8 @@ def root():
         "version": settings.APP_VERSION,
         "docs": "/docs",
         "endpoints": [
-            "/backtest/ema-crossover"
+            "/backtest/ema-crossover",
+            "/backtest/rsi-mean-reversion"
         ],
         "data_mode": "real" if settings.USE_REAL_DATA else "synthetic"
     }
@@ -130,4 +135,95 @@ def backtest_ema_crossover(request: EMABacktestRequest):
     
     except Exception as e:
         logger.exception(f"Unexpected error during backtest: {e}")
+        raise HTTPException(status_code=500, detail="Internal server error occurred")
+
+
+@router.post("/backtest/rsi-mean-reversion", response_model=RSIBacktestResponse)
+def backtest_rsi_mean_reversion(request: RSIBacktestRequest):
+    """
+    Backtest RSI Mean Reversion Strategy
+    
+    The RSI Mean Reversion strategy uses the Relative Strength Index:
+    - RSI calculates the magnitude of recent price changes
+    - RSI ranges from 0 to 100
+    
+    Trading Logic:
+    - BUY when RSI crosses BELOW oversold level (default: 30) - expecting bounce
+    - SELL when RSI crosses ABOVE overbought level (default: 70) - take profit
+    
+    Returns:
+        Backtest results with performance metrics:
+        - Win Rate: Percentage of profitable trades
+        - Total Return: Overall portfolio growth
+        - Max Drawdown: Largest peak-to-trough decline
+        - Sharpe Ratio: Risk-adjusted return measure
+        - Total Trades: Number of completed trades
+    
+    Raises:
+        400: Invalid request parameters
+        404: Market not found
+        500: Internal server error
+        503: Injective connection error
+    """
+    try:
+        logger.info(f"RSI Backtest request: {request.market} {request.timeframe} with params {request.parameters}")
+        
+        # Step 1: Fetch historical data
+        data_client = get_data_client()
+        
+        df = data_client.fetch_historical_candles(
+            market=request.market,
+            timeframe=request.timeframe,
+            limit=settings.DEFAULT_CANDLE_LIMIT
+        )
+        logger.info(f"Fetched {len(df)} candles for {request.market}")
+        
+        # Step 2: Execute RSI strategy
+        strategy = RSIStrategy()
+        trades = strategy.execute(
+            data=df,
+            parameters={
+                'period': request.parameters.period,
+                'oversold': request.parameters.oversold,
+                'overbought': request.parameters.overbought
+            }
+        )
+        
+        logger.info(f"RSI Strategy executed: {len(trades)} trades generated")
+        
+        # Step 3: Calculate performance metrics
+        metrics = MetricsCalculator.calculate(trades, request.initial_capital)
+        
+        logger.info(f"Metrics calculated: {metrics}")
+        
+        # Step 4: Return results
+        return RSIBacktestResponse(
+            strategy="rsi_mean_reversion",
+            market=request.market,
+            timeframe=request.timeframe,
+            results=BacktestResults(**metrics)
+        )
+    
+    except InvalidMarketError as e:
+        logger.error(f"Invalid market: {e}")
+        raise HTTPException(status_code=404, detail=str(e))
+    
+    except InsufficientDataError as e:
+        logger.error(f"Insufficient data: {e}")
+        raise HTTPException(status_code=400, detail=str(e))
+    
+    except StrategyExecutionError as e:
+        logger.error(f"Strategy execution error: {e}")
+        raise HTTPException(status_code=400, detail=str(e))
+    
+    except InjectiveConnectionError as e:
+        logger.error(f"Injective connection error: {e}")
+        raise HTTPException(status_code=503, detail=f"Failed to connect to Injective network: {str(e)}")
+    
+    except ValueError as e:
+        logger.error(f"Validation error: {e}")
+        raise HTTPException(status_code=400, detail=str(e))
+    
+    except Exception as e:
+        logger.exception(f"Unexpected error during RSI backtest: {e}")
         raise HTTPException(status_code=500, detail="Internal server error occurred")

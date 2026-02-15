@@ -90,7 +90,7 @@ app/
 Currently supported strategies:
 
 - **EMA Crossover Strategy** ✅
-- RSI Mean Reversion Strategy (coming soon)
+- **RSI Mean Reversion Strategy** ✅
 
 ### 2️⃣ Real Injective Markets Supported
 
@@ -200,6 +200,89 @@ Uses two EMAs:
 **Sell Signal (Death Cross):**
 - When Short EMA crosses BELOW Long EMA
 - Suggests momentum is turning bearish
+
+### POST /backtest/rsi-mean-reversion
+
+Backtest the RSI Mean Reversion strategy on **real Injective markets**.
+
+**Request Body:**
+
+```json
+{
+  "market": "INJ/USDT PERP",
+  "timeframe": "1h",
+  "parameters": {
+    "period": 14,
+    "oversold": 30,
+    "overbought": 70
+  },
+  "initial_capital": 10000
+}
+```
+
+**Response:**
+
+```json
+{
+  "strategy": "rsi_mean_reversion",
+  "market": "INJ/USDT PERP",
+  "timeframe": "1h",
+  "results": {
+    "win_rate": 0.64,
+    "total_return": 0.32,
+    "max_drawdown": 0.05,
+    "sharpe_ratio": 2.32,
+    "total_trades": 9
+  }
+}
+```
+
+**cURL Example:**
+```bash
+curl -X POST http://localhost:8000/backtest/rsi-mean-reversion \
+  -H "Content-Type: application/json" \
+  -d '{
+    "market": "BTC/USDT PERP",
+    "timeframe": "1h",
+    "parameters": {
+      "period": 14,
+      "oversold": 30,
+      "overbought": 70
+    }
+  }'
+```
+
+## 📈 RSI Mean Reversion Strategy
+
+### What is RSI?
+
+**RSI = Relative Strength Index**
+
+- Momentum oscillator that ranges from 0 to 100
+- Measures the speed and magnitude of price changes
+- Identifies overbought and oversold conditions
+
+### Strategy Logic
+
+Uses RSI thresholds:
+
+- **Period** (default: 14) - calculation window
+- **Oversold** (default: 30) - buy threshold
+- **Overbought** (default: 70) - sell threshold
+
+**Buy Signal:**
+- When RSI crosses BELOW oversold threshold
+- Market is oversold, expecting a bounce
+
+**Sell Signal:**
+- When RSI crosses ABOVE overbought threshold
+- Market is overbought, taking profit
+
+### Best For
+
+- **Range-bound markets** - prices oscillating
+- **Mean reversion** - expecting price to return to average
+- **Counter-trend trading** - buying dips, selling rallies
 
 ## 🏗 Technical Architecture
 

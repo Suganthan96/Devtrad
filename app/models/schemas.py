@@ -42,6 +42,37 @@ class EMABacktestResponse(BaseModel):
     results: BacktestResults
 
 
+class RSIParameters(BaseModel):
+    """Parameters for RSI Mean Reversion Strategy"""
+    period: int = Field(default=14, gt=0, description="RSI calculation period (must be positive)")
+    oversold: float = Field(default=30, gt=0, lt=100, description="RSI oversold threshold (0-100)")
+    overbought: float = Field(default=70, gt=0, lt=100, description="RSI overbought threshold (0-100)")
+    
+    @field_validator('overbought')
+    @classmethod
+    def validate_thresholds(cls, v, info):
+        """Ensure overbought is greater than oversold"""
+        if 'oversold' in info.data and v <= info.data['oversold']:
+            raise ValueError('overbought must be greater than oversold')
+        return v
+
+
+class RSIBacktestRequest(BaseModel):
+    """Request body for RSI Mean Reversion backtest"""
+    market: str = Field(..., pattern=r'^[A-Z]+/[A-Z]+(\s+[A-Z]+)?$', description="Market pair (e.g., INJ/USDT, INJ/USDT PERP)")
+    timeframe: str = Field(..., pattern=r'^(1m|5m|15m|1h|4h|1d)$', description="Candle timeframe")
+    parameters: RSIParameters
+    initial_capital: float = Field(default=1000.0, gt=0, description="Starting capital (must be positive)")
+
+
+class RSIBacktestResponse(BaseModel):
+    """Response from RSI Mean Reversion backtest"""
+    strategy: str
+    market: str
+    timeframe: str
+    results: BacktestResults
+
+
 class Trade(BaseModel):
     """Individual trade record"""
     entry_price: float
