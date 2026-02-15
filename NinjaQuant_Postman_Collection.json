@@ -1,0 +1,90 @@
+{
+  "info": {
+    "name": "NinjaQuant - Injective Backtesting API",
+    "description": "Test your deployed NinjaQuant API on Railway",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Check API Status",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{RAILWAY_URL}}/",
+          "host": ["{{RAILWAY_URL}}"]
+        }
+      }
+    },
+    {
+      "name": "2. Backtest - INJ/USDT PERP",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"market\": \"INJ/USDT PERP\",\n  \"timeframe\": \"1h\",\n  \"parameters\": {\n    \"short_period\": 12,\n    \"long_period\": 26\n  },\n  \"initial_capital\": 10000\n}"
+        },
+        "url": {
+          "raw": "{{RAILWAY_URL}}/backtest/ema-crossover",
+          "host": ["{{RAILWAY_URL}}"],
+          "path": ["backtest", "ema-crossover"]
+        }
+      }
+    },
+    {
+      "name": "3. Backtest - BTC/USDT PERP",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"market\": \"BTC/USDT PERP\",\n  \"timeframe\": \"1h\",\n  \"parameters\": {\n    \"short_period\": 9,\n    \"long_period\": 21\n  }\n}"
+        },
+        "url": {
+          "raw": "{{RAILWAY_URL}}/backtest/ema-crossover",
+          "host": ["{{RAILWAY_URL}}"],
+          "path": ["backtest", "ema-crossover"]
+        }
+      }
+    },
+    {
+      "name": "4. Backtest - ETH/USDT PERP",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"market\": \"ETH/USDT PERP\",\n  \"timeframe\": \"4h\",\n  \"parameters\": {\n    \"short_period\": 12,\n    \"long_period\": 26\n  },\n  \"initial_capital\": 5000\n}"
+        },
+        "url": {
+          "raw": "{{RAILWAY_URL}}/backtest/ema-crossover",
+          "host": ["{{RAILWAY_URL}}"],
+          "path": ["backtest", "ema-crossover"]
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "RAILWAY_URL",
+      "value": "https://your-app.up.railway.app",
+      "type": "string"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+# Deta Space Configuration
+# https://deta.space/docs/en/basics/micros
+
+v: 0
+micros:
+  - name: ninjaquant-api
+    src: .
+    engine: python3.11
+    primary: true
+    run: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    public_routes:
+      - "/*"
+    env:
+      - name: USE_REAL_DATA
+        description: Enable real Injective data integration
+        default: "true"
+      - name: INJECTIVE_NETWORK
+        description: Injective network (mainnet/testnet)
+        default: "mainnet"
